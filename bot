@@ -1,0 +1,28 @@
+[Unit]
+Description=Alertmanager Bot
+Documentation=https://github.com/metalmatze/alertmanager-bot
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/usr/local/bin/alertmanager-bot
+ 
+[Service]
+Type=simple
+User=am-bot
+Group=am-bot
+Environment=ALERTMANAGER_URL=http://127.0.0.1:9093
+Environment=LISTEN_ADDR=127.0.0.1:8080
+Environment=TELEGRAM_TOKEN=
+Environment=STORE=bolt
+Environment=TEMPLATE_PATHS=/var/lib/alertmanager_bot/shared/default.tmpl
+Environment=BOLT_PATH=/var/lib/alertmanager_bot/shared/am_bot.db
+ExecStart=/usr/local/bin/alertmanager-bot \
+  --telegram.admin= \
+  --telegram.admin= \
+  --log.level=info
+KillMode=process
+SyslogIdentifier=alertmanager_bot
+Restart=always
+RestartSec=30
+ 
+[Install]
+WantedBy=multi-user.target
